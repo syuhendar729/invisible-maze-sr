@@ -1,5 +1,6 @@
 export default function Cell(props) {
     const isActive = props.x === props.activeX && props.y === props.activeY
+    const isFinish = props.x === props.finishX && props.y === props.finishY
     const w = props.wall
 
     return (
@@ -18,7 +19,7 @@ export default function Cell(props) {
             }}
             onClick={() => console.log(props)}
         >
-            {isActive ? '#' : '-'}
+            {isActive ? '#' : isFinish ? 'F' : '-'}
         </td>
     )
 }
