@@ -1,0 +1,73 @@
+:root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    /* place-items: center; */
+    min-width: 320px;
+    min-height: 100vh;
+}
+
+table,
+th,
+td {
+    border: 3px solid transparent;
+}
+
+.cell {
+    /* border: 5px solid transparent; */
+    border-color: #ffffff;
+    width: 100px;
+    height: 100px;
+    background-color: #1a1a1a;
+}
+
+.board {
+    border-collapse: collapse;
+}
+
+.board-row {
+    display: table-row; /* Adjusted to work with table layout */
+}
+.arrow-button {
+    width: 100px;
+    height: 100px;
+    background-color: #000000;
+    color: white;
+    border: none;
+    font-size: 48px;
+    margin: 10px;
+    margin-top: 50px;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+}
+
+.arrow-button.up::before {
+    content: '▲';
+}
+
+.arrow-button.right::before {
+    content: '▶';
+}
+
+.arrow-button.down::before {
+    content: '▼';
+}
+
+.arrow-button.left::before {
+    content: '◀';
+}
