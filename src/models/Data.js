@@ -34,64 +34,86 @@ const generateLabirin = (width, height) => {
         })
     }
 
+    // Generate the maze
     const startX = Math.floor(Math.random() * width)
     const startY = Math.floor(Math.random() * height)
     dfs(startX, startY)
 
-    return grid
+    // Find valid start and finish positions
+    const isAccessible = (x, y) => !visited[y][x]
+    let start, finish
+
+    do {
+        start = {
+            x: Math.floor(Math.random() * width),
+            y: Math.floor(Math.random() * height),
+        }
+    } while (isAccessible(start.x, start.y))
+
+    do {
+        finish = {
+            x: Math.floor(Math.random() * width),
+            y: Math.floor(Math.random() * height),
+        }
+    } while (
+        isAccessible(finish.x, finish.y) ||
+        (start.x === finish.x && start.y === finish.y)
+    )
+
+    return { grid, start, finish }
 }
 
-const labirin = generateLabirin(4, 4)
+const labirinData = generateLabirin(5, 5)
 
-export default labirin
+export default labirinData
 
-const gen = (n) => {
-    let wall = { left: true, right: true, top: true, bottom: true }
-    switch (n) {
-        case 1:
-            wall.left = false
-            break
-        case 2:
-            wall.right = false
-            break
-        case 3:
-            wall.top = false
-            break
-        case 4:
-            wall.bottom = false
-            break
-        case 5:
-            wall.left = false
-            wall.right = false
-            break
-        case 6:
-            wall.left = false
-            wall.top = false
-            break
-        case 7:
-            wall.left = false
-            wall.bottom = false
-            break
-        case 8:
-            wall.right = false
-            wall.top = false
-            break
-        case 9:
-            wall.right = false
-            wall.bottom = false
-            break
-        case 10:
-            wall.top = false
-            wall.bottom = false
-            break
-    }
-    return wall
-}
-
-const labirinGua = [
-    [gen(4), gen(4)],
-    [gen(8), gen(6)],
-]
+// const gen = (n) => {
+//     let wall = { left: true, right: true, top: true, bottom: true }
+//     switch (n) {
+//         case 1:
+//             wall.left = false
+//             break
+//         case 2:
+//             wall.right = false
+//             break
+//         case 3:
+//             wall.top = false
+//             break
+//         case 4:
+//             wall.bottom = false
+//             break
+//         case 5:
+//             wall.left = false
+//             wall.right = false
+//             break
+//         case 6:
+//             wall.left = false
+//             wall.top = false
+//             break
+//         case 7:
+//             wall.left = false
+//             wall.bottom = false
+//             break
+//         case 8:
+//             wall.right = false
+//             wall.top = false
+//             break
+//         case 9:
+//             wall.right = false
+//             wall.bottom = false
+//             break
+//         case 10:
+//             wall.top = false
+//             wall.bottom = false
+//             break
+//     }
+//     return wall
+// }
+//
+// const labirinGua = [
+//     [gen(4), gen(4)],
+//     [gen(8), gen(6)],
+// ]
 
 // export default labirinGua
 

@@ -2,19 +2,32 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import initialMazeData from './models/Data'
 import Cell from './components/Cell'
+import Countdown from './components/Countdown'
+import Modal from './components/Modal'
 
 function App() {
-    const [maze, setMaze] = useState(initialMazeData)
-    const [position, setPosition] = useState({ x: 0, y: 0 })
-    const [finish, setFinish] = useState({ x: 2, y: 2 })
+    const [maze, setMaze] = useState(initialMazeData.grid)
+    const [position, setPosition] = useState(initialMazeData.start)
+    const [finish, setFinish] = useState(initialMazeData.finish)
     const [isInvisible, setIsInvisible] = useState(false)
+    const [showModal, setShowModal] = useState(false)
+    const [modalMessage, setModalMessage] = useState(
+        'Kamu menabrak tembok, nyawa berkurang 1!'
+    )
 
     useEffect(() => {
         console.log(`x: ${position.x}, y: ${position.y}`)
     }, [position])
 
     const hitWall = () => {
-        alert('Kamu menabrak tembok, nyawa berkurang 1!')
+        const audio = new Audio('/bs-hitwall.wav')
+        audio.play()
+        setShowModal(true)
+        setPosition(initialMazeData.start)
+    }
+
+    const closeModal = () => {
+        setShowModal(false)
     }
 
     const handleMove = (dx, dy, wallCheck) => {
@@ -30,8 +43,12 @@ function App() {
             !wallCheck
         ) {
             setPosition({ x: newX, y: newY })
-            if (newX === finish.x && newY === finish.y)
-                alert('Gacor, lu menang cookkk!!')
+            if (newX === finish.x && newY === finish.y) {
+                const audio = new Audio('/bs-finish.wav')
+                audio.play()
+                setModalMessage('Gacor lu menang Cok!!')
+                setShowModal(true)
+            }
         } else {
             hitWall()
         }
@@ -46,8 +63,8 @@ function App() {
     const handleDown = () =>
         handleMove(0, 1, maze[position.y]?.[position.x]?.bottom)
 
-    const toggleInvisibleMaze = () => {
-        setIsInvisible(!isInvisible)
+    const handleFinishCountdown = () => {
+        setIsInvisible(true)
     }
 
     const renderMaze = () => {
@@ -62,6 +79,7 @@ function App() {
                         activeY={position.y}
                         finishX={finish.x}
                         finishY={finish.y}
+                        isInvisible={isInvisible}
                         wall={
                             isInvisible
                                 ? {
@@ -80,6 +98,7 @@ function App() {
 
     return (
         <>
+            <Countdown initialTime={5} onFinish={handleFinishCountdown} />
             <table className="board">
                 <tbody>{renderMaze()}</tbody>
             </table>
@@ -98,7 +117,10 @@ function App() {
                     onClick={handleRight}
                 ></button>
             </div>
-            <button onClick={toggleInvisibleMaze}>Hilang</button>
+            <Modal isOpen={showModal} onClose={closeModal}>
+                <h2>{modalMessage}</h2>
+                <button onClick={closeModal}>Tutup</button>
+            </Modal>
         </>
     )
 }
